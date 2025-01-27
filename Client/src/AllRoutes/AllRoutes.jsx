@@ -13,8 +13,6 @@ import { isAuth } from '../fun'
 const AllRoutes = () => {
 const navigate=useNavigate()
   const ProtectedRoute=({children})=>{
-    console.log(isAuth());
-    
    if (!isAuth()){
     setTimeout(()=>{
        navigate("/")

@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom"
+import { Navigate, useNavigate} from "react-router-dom"
 
 
 export const getToken = () => {
@@ -14,9 +14,11 @@ export const isAuth = () => {
 };
 
 
-export const logout = (navigate) => {
+export const logout = (navigate,setProfileData,Navigate) => {
   localStorage.clear()
+  setProfileData(null)
   navigate("/")
+  //  return <Navigate to="/" />
 
 }
 
@@ -27,12 +29,18 @@ export const getInitials = (name) => {
   return initials;
 };
 
-export const getUsername = () => {
-  const username = localStorage.getItem("username")
-  if (!username) { return "null" }
-  return username
-
-}
+export const getUserData = () => {
+  const userData = localStorage.getItem("userdata");
+  if (!userData) {
+    return null; 
+  }
+  try {
+    return JSON.parse(userData); 
+  } catch (error) {
+    console.error("Failed to parse userdata from localStorage:", error);
+    return null; 
+  }
+};
 
 let isLoading = false;
 

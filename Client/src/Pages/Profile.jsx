@@ -1,13 +1,16 @@
-import React,{useState,useEffect} from 'react'
+import React,{useState,useEffect, useContext} from 'react'
 import {useNavigate,useParams} from 'react-router-dom'
 import axios from 'axios'
 import { getToken } from '../fun'
 import { toast } from 'react-toastify'
-
+import { ProfileContext } from '../Context/UserContext'
 
 const Profile = () => {
     const {id} = useParams()
-    // console.log(id);  
+  const {profileData,setProfileData}=useContext(ProfileContext)
+  console.log(profileData);
+
+ 
     const navigate = useNavigate()
     const [formData, setFormData] = useState({
         name:"",email:""
@@ -30,6 +33,7 @@ const Profile = () => {
                 let name=response?.data?.data.name
                 let email=response?.data?.data.email            
                 setFormData({...formData,name,email})
+                setProfileData({...profileData,name,email})
                 console.log(formData);
                 
             }
@@ -58,10 +62,11 @@ const Profile = () => {
             })
             if (response.status == 201) {
                 toast.success(response.data.message);
-                // setTimeout(() => {
-                //     navigate("/notes")
-                // }, 1500)
+                const { name, email } = formData;
+                const updatedProfileData = { ...profileData, name,email };
 
+                setProfileData(updatedProfileData);
+                localStorage.setItem("userdata", JSON.stringify(updatedProfileData));
             }
             else {
                 toast.info(response.data.message)

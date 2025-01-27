@@ -22,7 +22,7 @@ const Login = () => {
     const handlesubmit = async (e) => {
         e.preventDefault()
         try {
-            showLoader()
+            // showLoader()
             const response = await axios({
                 method: "POST",
                 data: formData,
@@ -32,7 +32,9 @@ const Login = () => {
                 hideLoader()
                 toast.success(response.data.message);
                 localStorage.setItem("token", response.data.token)
-                localStorage.setItem("username", response.data.profile.name)
+                localStorage.setItem("userdata", JSON.stringify(response.data.profile))
+                // console.log(response.data.profile);
+                
                 setProfileData(response.data.profile)
 
                 setTimeout(() => {
