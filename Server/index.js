@@ -9,8 +9,13 @@ const {userRoute}=require("./routes/userRoute")
 const {authMiddleware}=require("./middlewares/authmiddleware")
 
 const app=express()
-app.use(cors());
-//   app.options('*', cors());
+const corsOptions = {
+    origin: "http://localhost:5173", 
+    credentials: true, 
+    optionsSuccessStatus: 200, 
+  }
+  
+  app.use(cors(corsOptions));
 app.use(express.json())
 
 
