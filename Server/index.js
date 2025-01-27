@@ -9,13 +9,8 @@ const {userRoute}=require("./routes/userRoute")
 const {authMiddleware}=require("./middlewares/authmiddleware")
 
 const app=express()
-app.use(cors({
-    origin: ['http://localhost:5173', 'https://ark-note-rinka-keshs-projects.vercel.app'],
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true, 
-  }));
-  app.options('*', cors());
+app.use(cors());
+//   app.options('*', cors());
 app.use(express.json())
 
 
