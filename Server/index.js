@@ -12,7 +12,7 @@ const app = express()
 const corsOptions = {
     origin: [
         "http://localhost:5173",
-        "https://ark-note.vercel.app",
+        "https://arknote.vercel.app",
        
     ],
     credentials: true,
