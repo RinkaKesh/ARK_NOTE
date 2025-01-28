@@ -26,8 +26,8 @@ app.use(express.json())
 
 app.use("/notes", authMiddleware, noteRoute)
 app.use("/user", userRoute)
-
-app.listen(process.env.PORT, async()=>{
+const PORT = process.env.PORT || 8000   
+app.listen(PORT, async()=>{
     try {
         await connection()
         console.log("connected to db")
