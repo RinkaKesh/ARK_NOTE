@@ -24,7 +24,7 @@ const Profile = () => {
         try {
             const response = await axios({
                 method: "GET",
-                url: `https://ar-note-server.vercel.app/user/${id}`,
+                url: `https://ark-note.vercel.app/user/${id}`,
                 headers: {
                     Authorization: getToken()
                 }
@@ -50,7 +50,7 @@ const Profile = () => {
     const handlesubmit = async (e) => {
         if (!id) { return }
         e.preventDefault()
-        const url=`https://ar-note-server.vercel.app/user/edit/${id}`
+        const url=`https://ark-note.vercel.app/user/edit/${id}`
         try {
             const response = await axios({
                 method: "PATCH",

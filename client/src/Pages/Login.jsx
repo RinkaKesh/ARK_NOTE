@@ -26,7 +26,7 @@ const Login = () => {
             const response = await axios({
                 method: "POST",
                 data: formData,
-                url: "https://ar-note-server.vercel.app/user/login"
+                url: "https://ark-note.vercel.app/user/login"
             })
             if (response.status == 200) {
                 hideLoader()

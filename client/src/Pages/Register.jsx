@@ -20,7 +20,7 @@ const Register = () => {
           const response=await axios({
             method:"POST",
             data:formData,
-            url:"https://ar-note-server.vercel.app/user/register"
+            url:"https://ark-note.vercel.app/user/register"
           })
          if(response.status==201){
             toast.success(response.data.message); 

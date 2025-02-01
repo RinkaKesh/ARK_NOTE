@@ -11,7 +11,7 @@ const CompleteButton = ({ noteId, onSuccess }) => {
     try {
       const response = await axios({
         method: 'PATCH',
-        url: `https://ar-note-server.vercel.app/notes/complete/${noteId}`,
+        url: `https://ark-note.vercel.app/notes/complete/${noteId}`,
         headers: { Authorization: getToken() }
       });
 
@@ -60,7 +60,7 @@ const AddNote = ({ id, onSuccess, onClose }) => {
     try {
       const response = await axios({
         method: "GET",
-        url: `https://ar-note-server.vercel.app/notes/${id}`,
+        url: `https://ark-note.vercel.app/notes/${id}`,
         headers: { Authorization: getToken() },
       });
       if (response.status === 200) {
@@ -100,8 +100,8 @@ const AddNote = ({ id, onSuccess, onClose }) => {
     }
 
     const url = id
-      ? `https://ar-note-server.vercel.app/notes/edit/${id}`
-      : `https://ar-note-server.vercel.app/notes/create`;
+      ? `https://ark-note.vercel.app/notes/edit/${id}`
+      : `https://ark-note.vercel.app/notes/create`;
     const method = id ? "PATCH" : "POST";
     try {
       const response = await axios({
