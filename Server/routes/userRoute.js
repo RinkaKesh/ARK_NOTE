@@ -3,7 +3,7 @@ require("dotenv").config()
 const userRoute=express.Router()
 const { UserModel } = require("../models/userModel")
 const jwt = require("jsonwebtoken")
-const bcrypt = require("bcrypt")
+const bcrypt = require('bcryptjs')
 
 
 userRoute.get("/", async (req, res) => {
@@ -26,8 +26,8 @@ userRoute.get("/:_id", async (req, res) => {
 
 userRoute.patch("/edit/:id",async (req,res) => {
     try {
-        const userToEdit=await UserModel.findById({_id:req.params.id})
-        await UserModel.findByIdAndUpdate({_id:req.params.id},{...userToEdit._doc,...req.body})
+        const userToEdit=await UserModel.findById(req.params.id)
+        await UserModel.findByIdAndUpdate(req.params.id,{...userToEdit._doc,...req.body})
         res.status(201).send({message:"Profile Updated Successfully",data:{...userToEdit._doc,...req.body}})
     } catch (error) {
         res.status(500).send({message:error})
