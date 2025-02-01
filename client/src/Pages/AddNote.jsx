@@ -132,7 +132,7 @@ const AddNote = ({ id, onSuccess, onClose }) => {
     <div className="">
       <div className="flex justify-between items-center mb-4">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-full bg-emerald-700">
+          {/* <div className="w-8 h-8 rounded-full bg-emerald-700"> */}
           {id && (
             <CompleteButton
               noteId={id}
@@ -142,7 +142,7 @@ const AddNote = ({ id, onSuccess, onClose }) => {
               }}
             />
           )}
-          </div>
+          {/* </div> */}
           <p className="text-lg font-bold">{id ? "Edit Note" : "Add Note"}</p>
         </div>
 
