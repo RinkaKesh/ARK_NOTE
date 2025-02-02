@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react'
 import axios from 'axios'
 import { toast } from 'react-toastify'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate,Link } from 'react-router-dom'
 import { ProfileContext } from '../Context/UserContext'
 import { hideLoader,showLoader} from '../fun'
 
@@ -111,6 +111,7 @@ const Login = () => {
                         Login
                     </button>
                 </form>
+                <p className='mt-2 text-amber-800'>New User? <Link to="/register">Please Register!</Link></p>
             </div>
         </div>
 

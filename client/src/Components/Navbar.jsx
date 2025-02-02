@@ -27,6 +27,7 @@ const Navbar = () => {
                   )}
                 </Link>
               </li>
+              <li><Link to="/notes">My Notes</Link></li>
               <li>
                 <button onClick={() => logout(navigate,setProfileData,Navigate)}>Logout</button>
               </li>

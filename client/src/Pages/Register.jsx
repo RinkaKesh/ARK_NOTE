@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 import { toast,ToastContainer } from 'react-toastify'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate ,Link} from 'react-router-dom'
 
 const Register = () => {
     const navigate=useNavigate()
@@ -41,12 +41,7 @@ const Register = () => {
             }
           
         }
-
-
-
-
     }
-
     return (
         <div className="flex items-center justify-center min-h-[calc(100vh-88px)]">
             <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-lg -mt-[250px] border border-amber-100">
@@ -113,6 +108,7 @@ const Register = () => {
                         Register
                     </button>
                 </form>
+                <p className='mt-2 text-amber-800'>Existing User? <Link to="/login">Go to Login Page!</Link></p>
             </div>
         </div>
     )

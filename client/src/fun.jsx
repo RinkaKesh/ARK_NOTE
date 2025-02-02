@@ -83,15 +83,15 @@ export const getIsLoading = () => isLoading;
 export const getStatusColors = (status) => {
   switch (status) {
     case "todo":
-      return { bgColor: "bg-yellow-300", textColor: "text-black" };
+      return { bgColor: "bg-yellow-400", textColor: "text-black",hoverColor:"hover:bg-yellow-300" };
     case "active":
-      return { bgColor: "bg-green-300", textColor: "text-white" };
+      return { bgColor: "bg-green-400", textColor: "text-white",hoverColor:"hover:bg-green-300" };
     case "overdue":
-      return { bgColor: "bg-red-300", textColor: "text-white" };
+      return { bgColor: "bg-red-400", textColor: "text-white",hoverColor:"hover:bg-red-300" };
     case "completed":
-      return { bgColor: "bg-blue-300", textColor: "text-white" };
+      return { bgColor: "bg-blue-400", textColor: "text-white",hoverColor:"hover:bg-blue-300" };
     default:
-      return { bgColor: "bg-gray-500", textColor: "text-white" }; 
+      return { bgColor: "bg-gray-600", textColor: "text-white",hoverColor:"hover:bg-gray-500" }; 
   }
 };
 
