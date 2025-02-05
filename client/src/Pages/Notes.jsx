@@ -147,14 +147,15 @@ const Notes = () => {
 
   return (
     <div className="flex flex-col h-screen relative">
-      <Header header_text={"My Notes"}/>
+      <Header header_text={"My Notes"} />
 
       <div className="w-full px-10 py-4 flex-1 overflow-y-auto">
         {isLoading && (
           <div className="fixed inset-0 bg-black opacity-30 flex justify-center items-center z-50">
-            <p className="text-lg font-semibold text-gray-800 animate-pulse">Loading...</p>
+            <div className="spinner-border animate-spin inline-block w-12 h-12 border-4 border-t-4 border-amber-500 rounded-full" />
           </div>
         )}
+
 
 
         {!isLoading && (
