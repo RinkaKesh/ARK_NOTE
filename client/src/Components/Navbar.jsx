@@ -15,10 +15,10 @@ const Navbar = () => {
         <ul className="flex flex-col gap-y-4 pb-12">
           {isAuth() ? (
             <>
-              <li className="nav_items">
+              <li className="auth_nav_items ">
                 <Link to={`/profile/${profileData?._id}`}>
                   {profileData ? (
-                    <div className="flex items-center gap-1">
+                    <div className="flex items-center justify-center gap-1">
                       <div className="flex items-center justify-center w-10 h-10 text-black bg-blue-200 text-base rounded-full">
                         {getInitials(profileData?.name)}
                       </div>

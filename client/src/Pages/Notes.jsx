@@ -151,10 +151,18 @@ const Notes = () => {
 
       <div className="w-full px-10 py-4 flex-1 overflow-y-auto">
         {isLoading && (
-          <div className="fixed inset-0 bg-black opacity-30 flex justify-center items-center z-50">
-            <div className="spinner-border animate-spin inline-block w-12 h-12 border-4 border-t-4 border-amber-500 rounded-full" />
+          <div className="fixed inset-0 bg-white opacity-30 flex justify-center items-center z-50">
+            <div className="relative flex justify-center items-center">
+              <div className="spinner-border animate-spin inline-block w-20 h-20 border-4 border-t-4 border-amber-800 rounded-full">
+                <span className="absolute text-lg font-semibold text-gray-800 ">
+                  Loading...
+                </span>
+              </div>
+            </div>
           </div>
         )}
+
+
 
 
 
