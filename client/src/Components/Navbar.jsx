@@ -11,7 +11,7 @@ const Navbar = () => {
 
     
     return (
-      <div className="w-[240px] p-6 bg-gray-50 text-xl text-amber-600 font-medium left-0 top-0 h-[100vh] bottom-0 fixed flex flex-col justify-end items-center ">
+      <div className="w-[270px] p-6 bg-gray-50 text-xl text-amber-600 font-medium left-0 top-0 h-[100vh] bottom-0 fixed flex flex-col justify-end items-center ">
         <ul className="flex flex-col gap-y-4 pb-12">
           {isAuth() ? (
             <>
