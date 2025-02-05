@@ -1,9 +1,10 @@
 import React, { useState, useContext } from 'react'
 import axios from 'axios'
 import { toast } from 'react-toastify'
-import { useNavigate,Link } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { ProfileContext } from '../Context/UserContext'
-import { hideLoader,showLoader} from '../fun'
+import { hideLoader, showLoader } from '../fun'
+import Header from '../Components/Header'
 
 const Login = () => {
     const navigate = useNavigate()
@@ -34,7 +35,7 @@ const Login = () => {
                 localStorage.setItem("token", response.data.token)
                 localStorage.setItem("userdata", JSON.stringify(response.data.profile))
                 // console.log(response.data.profile);
-                
+
                 setProfileData(response.data.profile)
 
                 setTimeout(() => {
@@ -58,60 +59,63 @@ const Login = () => {
                 toast.error("An unexpected error occurred. Please try again later.");
             }
         }
-        finally{
+        finally {
             hideLoader()
         }
     }
 
     return (
-        <div className="flex items-center justify-center min-h-[calc(100vh-88px)]">
-            <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-lg -mt-[250px] border border-amber-100">
-                <p className="text-2xl font-bold text-gray-800 mb-6 text-center">Login Here</p>
-                <form action="" onSubmit={handlesubmit} className="space-y-4">
-                    <div>
-                        <label
-                            htmlFor="email"
-                            className="block text-sm font-medium text-gray-700"
-                        >
-                            Enter Email
-                        </label>
-                        <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            value={formData.email}
-                            onChange={handleChange}
-                            placeholder="Enter Email"
-                            className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-amber-500 focus:border-amber-500"
-                        />
-                    </div>
+        <div className="flex flex-col h-screen">
+            <Header header_text={"Login"} />
+            <div className='w-full flex flex-1 items-center justify-center -mt-[200px]'>
+                <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-lg items-center border border-amber-100">
+                    <p className="text-2xl font-bold text-gray-800 mb-6 text-center">Login Here</p>
+                    <form action="" onSubmit={handlesubmit} className="space-y-4">
+                        <div>
+                            <label
+                                htmlFor="email"
+                                className="block text-sm font-medium text-gray-700"
+                            >
+                                Enter Email
+                            </label>
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                value={formData.email}
+                                onChange={handleChange}
+                                placeholder="Enter Email"
+                                className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-amber-500 focus:border-amber-500"
+                            />
+                        </div>
 
-                    <div>
-                        <label
-                            htmlFor="password"
-                            className="block text-sm font-medium text-gray-700"
-                        >
-                            Enter Password
-                        </label>
-                        <input
-                            type="password"
-                            id="password"
-                            name="password"
-                            value={formData.password}
-                            onChange={handleChange}
-                            placeholder="Enter Password..."
-                            className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-amber-500 focus:border-amber-500"
-                        />
-                    </div>
+                        <div>
+                            <label
+                                htmlFor="password"
+                                className="block text-sm font-medium text-gray-700"
+                            >
+                                Enter Password
+                            </label>
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                value={formData.password}
+                                onChange={handleChange}
+                                placeholder="Enter Password..."
+                                className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-amber-500 focus:border-amber-500"
+                            />
+                        </div>
 
-                    <button
-                        type="submit"
-                        className="w-full px-4 py-2 bg-amber-500 text-white font-semibold rounded-md shadow hover:bg-amber-300 transition duration-300"
-                    >
-                        Login
-                    </button>
-                </form>
-                <p className='mt-2 text-amber-800'>New User? <Link to="/register">Please Register!</Link></p>
+                        <button
+                            type="submit"
+                            className="w-full px-4 py-2 bg-amber-500 text-white font-semibold rounded-md shadow hover:bg-amber-300 transition duration-300"
+                        >
+                            Login
+                        </button>
+                    </form>
+                    <p className='mt-2 text-amber-800'>New User? <Link to="/register">Please Register!</Link></p>
+                </div>
             </div>
         </div>
 

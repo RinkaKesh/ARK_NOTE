@@ -1,0 +1,9 @@
+.nav_items{
+    width: auto;
+    padding: 6px 40px;
+    border:4px solid rgb(149, 167, 226);
+    text-align: center;
+    font-size: x-large;
+    font-weight: bold;
+    border-radius: 20px;
+}
