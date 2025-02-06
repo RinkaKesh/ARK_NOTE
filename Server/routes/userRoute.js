@@ -66,11 +66,12 @@ userRoute.post("/login", async(req, res) => {
         if(!validPassword){return res.status(401).send({message:"Invalid Credentials"})}
        
         const { password: _, ...userProfileWithoutPassword } = CheckIfUser.toObject();
-         jwt.sign({userId:CheckIfUser._id,username: CheckIfUser.name},process.env.SECRET_KEY,{expiresIn:"10h"},(err, token) => {
+        const expiresIn=10 * 60 * 60;
+         jwt.sign({userId:CheckIfUser._id,username: CheckIfUser.name},process.env.SECRET_KEY,{expiresIn},(err, token) => {
             if (err) {
                 return res.status(500).send({ message: err })
             }
-          res.send({ message:`${CheckIfUser.name} successfully logged in`,token: token,profile:userProfileWithoutPassword})
+          res.send({ message:`${CheckIfUser.name} successfully logged in`,token: token,profile:userProfileWithoutPassword,expiresIn:expiresIn})
         })
     } catch (error) {
         res.status(500).send({ message: "Server Error" })
