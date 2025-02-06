@@ -23,7 +23,7 @@ export const NotesProvider = ({ children }) => {
    
     setNotes(prevNotes =>
       prevNotes.map(note =>
-        note.id === noteId ? { ...note, ...updatedData } : note
+        note._id === noteId ? { ...note, ...updatedData } : note
       )
     );
   }, []);
