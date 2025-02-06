@@ -1,4 +1,4 @@
-import React,{useContext,useEffect} from 'react'
+import React,{useContext,useEffect,useState} from 'react'
 import Home from '../Pages/Home'
 import Register from '../Pages/Register'
 import Login from '../Pages/Login'
@@ -13,15 +13,25 @@ const AllRoutes = () => {
   const navigate = useNavigate();
 
   const ProtectedRoute = ({ children }) => {
+    const [authenticated, setAuthenticated] = useState(isAuth());
+    const navigate = useNavigate();
+  
     useEffect(() => {
-      if (!isAuth()) {
-        navigate("/", { replace: true });
-      }
-    }, []);
-    if (!isAuth()) {
-      return "/";
-    }
-    return children;
+      const checkAuth = () => {
+        if (!isAuth()) {
+          console.warn("Session expired. Redirecting...");
+          navigate("/login", { replace: true });
+        }
+      };
+  
+      checkAuth(); 
+  
+      const interval = setInterval(checkAuth, 5000); 
+  
+      return () => clearInterval(interval); 
+    }, [navigate]);
+  
+    return authenticated ? children : <Navigate to="/login" replace />;
   };
 
   return (

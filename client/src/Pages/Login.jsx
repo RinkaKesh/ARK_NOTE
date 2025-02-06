@@ -30,8 +30,9 @@ const Login = () => {
                 url: "https://ark-note.vercel.app/user/login"
             })
             if (response.status == 200) {
-                hideLoader()
                 toast.success(response.data.message);
+                const expiryTime = new Date().getTime() + response.data.expiresIn * 1000; 
+                localStorage.setItem("tokenExpiry", expiryTime);
                 localStorage.setItem("token", response.data.token)
                 localStorage.setItem("userdata", JSON.stringify(response.data.profile))
                 // console.log(response.data.profile);

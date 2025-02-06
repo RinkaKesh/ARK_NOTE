@@ -10,7 +10,13 @@ export const getToken = () => {
 };
 
 export const isAuth = () => {
-  return getToken() !== null;
+  const token = localStorage.getItem("token");
+  const expiry = localStorage.getItem("tokenExpiry"); 
+
+  if (!token || !expiry) return false;
+
+  const now = new Date().getTime();
+  return now < Number(expiry); 
 };
 
 

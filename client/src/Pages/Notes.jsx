@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useContext } from "react";
 import axios from "axios";
 import { getStatusColors, getToken, isAuth } from "../fun";
 import { useNavigate } from "react-router-dom";
@@ -11,9 +11,11 @@ import { MdFilterList, MdClose } from "react-icons/md";
 import Select from "react-select";
 import Header from "../Components/Header";
 import { Check } from "lucide-react";
+import {NotesContext} from '../Context/NotesProvider'
+
 const Notes = () => {
   const navigate = useNavigate();
-  const [notes, setNotes] = useState([]);
+  const {notes, setNotes} = useContext(NotesContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentNoteId, setCurrentNoteId] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -177,7 +179,7 @@ const Notes = () => {
     <div className="flex flex-col h-screen relative">
       <Header header_text={"My Notes"} />
 
-      <div className="w-full px-10 py-4 flex-1 overflow-y-auto">
+      <div className="w-full px-10  flex-1 overflow-y-auto">
         {isLoading && (
           <div className="fixed inset-0 bg-white opacity-30 flex justify-center items-center z-50">
             <div className="relative flex justify-center items-center">
@@ -190,16 +192,12 @@ const Notes = () => {
           </div>
         )}
 
-
-
-
-
         {!isLoading && (
           <>
-            <div className="flex justify-end">
+            <div className="flex justify-end bg-amber-800">
               <button
                 onClick={handleAdd}
-                className="mb-4 px-4 py-2 bg-amber-500 text-white font-semibold rounded-md shadow hover:bg-amber-300 transition duration-300 transform hover:scale-x-105"
+                className="px-4 py-2 bg-amber-500 text-white font-semibold rounded-md shadow hover:bg-amber-300 transition duration-300 transform hover:scale-x-105"
               >
                 Add Note +
               </button>
