@@ -5,8 +5,7 @@ import { getToken } from "../fun";
 import { IoMdClose } from "react-icons/io";
 import { Check } from "lucide-react";
 
-const CompleteButton = ({ noteId, onSuccess }) => {
-  const [isCompleted, setIsCompleted] = useState(false);
+export const CompleteButton = ({ noteId, onSuccess }) => {
   const handleComplete = async () => {
     try {
       const response = await axios({
@@ -19,30 +18,23 @@ const CompleteButton = ({ noteId, onSuccess }) => {
         onSuccess();
       }
     } catch (error) {
-     
+
       console.error('Error completing note:', error);
       toast.error('Failed to complete note');
     }
   };
 
   return (
-    // <button
-    //   onClick={handleComplete}
-    //   className="mb-2 px-4 py-2 bg-green-500 text-white font-semibold rounded-md shadow hover:bg-green-600 transition duration-300"
-    // >
-    //   Mark Complete
-    // </button>
     <button
-    onClick={handleComplete}
-    title="Mark as completed"
-    className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300 ${
-      isCompleted ? 'bg-green-500 hover:bg-green-600' : 'bg-gray-300 hover:bg-gray-400'
-    }`}
-  >
-    <Check size={16} className="text-white" />
-  </button>
+      onClick={handleComplete}
+      title="Mark as completed"
+      className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300 ${isCompleted ? 'bg-green-500 hover:bg-green-600' : 'bg-gray-300 hover:bg-gray-400'
+        }`}
+    >
+      <Check size={16} className="text-white" />
+    </button>
   );
-}; 
+};
 
 const AddNote = ({ id, onSuccess, onClose }) => {
   const textareaRef = useRef(null);
@@ -133,15 +125,6 @@ const AddNote = ({ id, onSuccess, onClose }) => {
       <div className="flex justify-between items-center mb-4">
         <div className="flex items-center gap-2">
           {/* <div className="w-8 h-8 rounded-full bg-emerald-700"> */}
-          {id && (
-            <CompleteButton
-              noteId={id}
-              onSuccess={() => {
-                onSuccess();
-                onClose();
-              }}
-            />
-          )}
           {/* </div> */}
           <p className="text-lg font-bold">{id ? "Edit Note" : "Add Note"}</p>
         </div>
@@ -201,7 +184,7 @@ const AddNote = ({ id, onSuccess, onClose }) => {
             />
           </div>
         </div>
-        
+
 
         <div className="flex justify-end">
           <button

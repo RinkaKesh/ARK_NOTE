@@ -10,7 +10,7 @@ import AddNote from "./AddNote";
 import { MdFilterList, MdClose } from "react-icons/md";
 import Select from "react-select";
 import Header from "../Components/Header";
-
+import { Check } from "lucide-react";
 const Notes = () => {
   const navigate = useNavigate();
   const [notes, setNotes] = useState([]);
@@ -26,7 +26,9 @@ const Notes = () => {
   const [deleteInProgress, setDeleteInProgress] = useState(false);
   const [deletingNoteId, setDeletingNoteId] = useState(null);
   const [selecteddateSort, setSelectedDateSort] = useState(null);
-
+  const [isCompleted, setIsCompleted] = useState(false);
+  const [completeInProgress, setCompleteInProgress] = useState(false);
+  const [completingNoteId, setCompletingNoteId] = useState(null);
   const getNotes = async () => {
     if (!isAuth()) return;
     try {
@@ -86,6 +88,32 @@ const Notes = () => {
     } finally {
       setDeleteInProgress(false);
       setDeletingNoteId(null);
+    }
+  };
+
+  //complete note 
+  const handleComplete = async (id) => {
+    try {
+      setCompleteInProgress(true);
+      setCompletingNoteId(id);
+      const response = await axios({
+        method: 'PATCH',
+        url: `https://ark-note.vercel.app/notes/complete/${id}`,
+        headers: { Authorization: getToken() }
+      });
+
+      if (response.status === 200) {
+      setFilteredNotes(prevnotes=>prevnotes.map(note=>note._id===id?{...note,status:"completed"}:note));
+       setNotes(prevNotes=>prevNotes.map(note=>note._id===id ? {...note,status:"completed"}:note));
+      }
+    } catch (error) {
+
+      console.error('Error completing note:', error);
+      toast.error('Failed to complete note');
+    }
+    finally{
+      setCompleteInProgress(false);
+      setCompletingNoteId(null);
     }
   };
 
@@ -242,6 +270,11 @@ const Notes = () => {
                           <p className="text-sm font-semibold text-gray-800 animate-pulse">Deleting...</p>
                         </div>
                       )}
+                       {completeInProgress && completingNoteId === note._id && (
+                        <div className="absolute inset-0 bg-white opacity-60 flex justify-center items-center z-10">
+                          <p className="text-sm font-semibold text-gray-800 animate-pulse">Updating Status...</p>
+                        </div>
+                      )}
                       {/* Status Badge */}
                       <div className={`capitalize absolute top-3 left-[-8%] w-[195%] transform rotate-45 text-base font-semibold text-center py-1.5 shadow-md flex justify-center items-center leading-relaxed ${getStatusColors(note?.status).bgColor} ${getStatusColors(note?.status).textColor}`}>
                         {note?.status}
@@ -249,7 +282,24 @@ const Notes = () => {
 
                       {/* Note Content */}
                       <div>
-                        <p className="text-lg font-semibold text-gray-800">{note?.title}</p>
+                        <div className="flex items-center gap-2 mb-4">
+                          <button
+                            onClick={(e)=>{
+                              e.stopPropagation()
+                              if(!completeInProgress){
+                                handleComplete(note._id);
+                              }
+                              // setIsCompleted(true);
+                              
+                            }}
+                            title="Mark as completed"
+                            className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300 ${note.status==="completed" ? 'bg-green-500 hover:bg-green-600' : 'bg-gray-300 hover:bg-gray-400'
+                              } ${completeInProgress && completingNoteId === note._id ? 'opacity-50 cursor-not-allowed' : ''}`}
+                          >
+                            <Check size={16} className="text-white" />
+                          </button>
+                          <p className="text-lg font-semibold text-gray-800">{note?.title}</p>
+                        </div>
                         <p className="text-gray-600 mb-4">{note?.description}</p>
                       </div>
 
