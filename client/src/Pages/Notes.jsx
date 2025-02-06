@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { getStatusColors, getToken, isAuth } from "../fun";
 import { useNavigate } from "react-router-dom";
@@ -11,9 +11,11 @@ import { MdFilterList, MdClose } from "react-icons/md";
 import Select from "react-select";
 import Header from "../Components/Header";
 import { Check } from "lucide-react";
+import { NotesContext } from '../Context/NotesProvider'
+
 const Notes = () => {
   const navigate = useNavigate();
-  const [notes, setNotes] = useState([]);
+  const { notes, setNotes } = useContext(NotesContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentNoteId, setCurrentNoteId] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -29,6 +31,7 @@ const Notes = () => {
   const [isCompleted, setIsCompleted] = useState(false);
   const [completeInProgress, setCompleteInProgress] = useState(false);
   const [completingNoteId, setCompletingNoteId] = useState(null);
+  
   const getNotes = async () => {
     if (!isAuth()) return;
     try {
@@ -103,15 +106,15 @@ const Notes = () => {
       });
 
       if (response.status === 200) {
-      setFilteredNotes(prevnotes=>prevnotes.map(note=>note._id===id?{...note,status:"completed"}:note));
-       setNotes(prevNotes=>prevNotes.map(note=>note._id===id ? {...note,status:"completed"}:note));
+        setFilteredNotes(prevnotes => prevnotes.map(note => note._id === id ? { ...note, status: "completed" } : note));
+        setNotes(prevNotes => prevNotes.map(note => note._id === id ? { ...note, status: "completed" } : note));
       }
     } catch (error) {
 
       console.error('Error completing note:', error);
       toast.error('Failed to complete note');
     }
-    finally{
+    finally {
       setCompleteInProgress(false);
       setCompletingNoteId(null);
     }
@@ -176,8 +179,15 @@ const Notes = () => {
   return (
     <div className="flex flex-col h-screen relative">
       <Header header_text={"My Notes"} />
-
-      <div className="w-full px-10 py-4 flex-1 overflow-y-auto">
+      <div className="flex justify-end px-10">
+          <button
+            onClick={handleAdd}
+            className="px-4 py-2 bg-amber-500 text-white font-semibold rounded-md shadow hover:bg-amber-300 transition duration-300 transform hover:scale-x-105"
+          >
+            Add Note +
+          </button>
+        </div>
+      <div className="w-full flex-1 overflow-y-auto p-4">
         {isLoading && (
           <div className="fixed inset-0 bg-white opacity-30 flex justify-center items-center z-50">
             <div className="relative flex justify-center items-center">
@@ -189,21 +199,16 @@ const Notes = () => {
             </div>
           </div>
         )}
-
-
-
-
-
         {!isLoading && (
           <>
-            <div className="flex justify-end">
+            {/* <div className="flex justify-end bg-amber-800">
               <button
                 onClick={handleAdd}
-                className="mb-4 px-4 py-2 bg-amber-500 text-white font-semibold rounded-md shadow hover:bg-amber-300 transition duration-300 transform hover:scale-x-105"
+                className="px-4 py-2 bg-amber-500 text-white font-semibold rounded-md shadow hover:bg-amber-300 transition duration-300 transform hover:scale-x-105"
               >
                 Add Note +
               </button>
-            </div>
+            </div> */}
 
             <div className="relative">
               {/* Filter Button */}
@@ -254,7 +259,7 @@ const Notes = () => {
 
               {/* Notes Grid */}
               {filteredNotes.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-10">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
                   {filteredNotes.map((note) => (
                     <div
                       key={note._id}
@@ -270,7 +275,7 @@ const Notes = () => {
                           <p className="text-sm font-semibold text-gray-800 animate-pulse">Deleting...</p>
                         </div>
                       )}
-                       {completeInProgress && completingNoteId === note._id && (
+                      {completeInProgress && completingNoteId === note._id && (
                         <div className="absolute inset-0 bg-white opacity-60 flex justify-center items-center z-10">
                           <p className="text-sm font-semibold text-gray-800 animate-pulse">Updating Status...</p>
                         </div>
@@ -284,16 +289,16 @@ const Notes = () => {
                       <div>
                         <div className="flex items-center gap-2 mb-4">
                           <button
-                            onClick={(e)=>{
+                            onClick={(e) => {
                               e.stopPropagation()
-                              if(!completeInProgress){
+                              if (!completeInProgress) {
                                 handleComplete(note._id);
                               }
                               // setIsCompleted(true);
-                              
+
                             }}
                             title="Mark as completed"
-                            className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300 ${note.status==="completed" ? 'bg-green-500 hover:bg-green-600' : 'bg-gray-300 hover:bg-gray-400'
+                            className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300 ${note.status === "completed" ? 'bg-green-500 hover:bg-green-600' : 'bg-gray-300 hover:bg-gray-400'
                               } ${completeInProgress && completingNoteId === note._id ? 'opacity-50 cursor-not-allowed' : ''}`}
                           >
                             <Check size={16} className="text-white" />

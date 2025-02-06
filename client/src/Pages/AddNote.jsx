@@ -1,45 +1,23 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef,useContext } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { getToken } from "../fun";
 import { IoMdClose } from "react-icons/io";
 import { Check } from "lucide-react";
+import { NotesContext } from "../Context/NotesProvider";
+import {NoteStatusService} from "../AllFun.js/StatusService.js";
 
-export const CompleteButton = ({ noteId, onSuccess }) => {
-  const handleComplete = async () => {
-    try {
-      const response = await axios({
-        method: 'PATCH',
-        url: `https://ark-note.vercel.app/notes/complete/${noteId}`,
-        headers: { Authorization: getToken() }
-      });
-
-      if (response.status === 200) {
-        onSuccess();
-      }
-    } catch (error) {
-
-      console.error('Error completing note:', error);
-      toast.error('Failed to complete note');
-    }
-  };
-
-  return (
-    <button
-      onClick={handleComplete}
-      title="Mark as completed"
-      className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300 ${isCompleted ? 'bg-green-500 hover:bg-green-600' : 'bg-gray-300 hover:bg-gray-400'
-        }`}
-    >
-      <Check size={16} className="text-white" />
-    </button>
-  );
-};
-
-const AddNote = ({ id, onSuccess, onClose }) => {
+const AddNote = ({ id, onClose }) => {
   const textareaRef = useRef(null);
   const initialState = { title: "", description: "", startDate: "", endDate: "", status: "" };
-  const [formData, setFormData] = useState(initialState);
+  const { addNote, updateNote } = useContext(NotesContext);
+  const [formData, setFormData] = useState(initialState || {
+    title: "",
+    description: "",
+    startDate: "",
+    endDate: "",
+    // status: "",
+  });
 
 
   const handleChange = (e) => {
@@ -73,6 +51,32 @@ const AddNote = ({ id, onSuccess, onClose }) => {
     specificNote();
   }, [id]);
 
+
+  class NoteApi {
+    static async saveNote(id, noteData) {
+      const url = id 
+        ? `https://ark-note.vercel.app/notes/edit/${id}`
+        : `https://ark-note.vercel.app/notes/create`;
+      
+      const method = id ? "PATCH" : "POST";
+      
+      return axios({
+        method,
+        url,
+        data: noteData,
+        headers: { Authorization: getToken() }
+      });
+    }
+  
+    static async completeNote(id) {
+      return axios({
+        method: "PATCH",
+        url: `https://ark-note.vercel.app/notes/complete/${id}`,
+        headers: { Authorization: getToken() }
+      });
+    }
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -85,32 +89,38 @@ const AddNote = ({ id, onSuccess, onClose }) => {
         `${missingField.charAt(0).toUpperCase() + missingField.slice(1)} is required.`
       );
     }
-
-    if (new Date(formData.endDate) < new Date(formData.startDate)) {
+    if (!NoteStatusService.validateDateRange(formData.startDate, formData.endDate)) {
       toast.error("End date must be later than start date.");
       return;
     }
 
-    const url = id
-      ? `https://ark-note.vercel.app/notes/edit/${id}`
-      : `https://ark-note.vercel.app/notes/create`;
-    const method = id ? "PATCH" : "POST";
+    // Calculate initial status on frontend
+    const newStatus = NoteStatusService.calculateStatus(
+      formData.startDate, 
+      formData.endDate, 
+      initialState?.status
+    );
+    
+    // Payload for API
+    const payload = {
+      ...formData,
+      status: newStatus
+    };
+
     try {
-      const response = await axios({
-        method,
-        data: formData,
-        url,
-        headers: { Authorization: getToken() },
-      });
-      if (response.status >= 200 && response.status < 300) {
-        toast.success(response.data.message);
-        onSuccess();
-        onClose();
+      const { data } = await NoteApi.saveNote(id, payload);
+      
+      if (id) {
+        updateNote(id, data.data);
+        toast.success("Note updated successfully");
       } else {
-        toast.info(response.data.message);
+        addNote(data.data);
+        toast.success("Note created successfully");
       }
+      
+      onClose();
     } catch (error) {
-      console.log(error);
+      toast.error(error.response?.data?.message || "An error occurred");
     }
   };
   useEffect(() => {
