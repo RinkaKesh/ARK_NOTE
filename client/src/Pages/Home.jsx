@@ -2,6 +2,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { ImageConfig } from "../assets/ImageConfig";
 
 const Home = () => {
   return (
@@ -30,9 +31,9 @@ const Home = () => {
           Capture your thoughts, organize your tasks, and never miss a beat!
         </motion.p>
         {/* <motion.img
-          src="/assets/images/note-taking.svg" 
+          src={ImageConfig.homepage.logo}
           alt="Note Taking"
-          className="w-64 mx-auto mt-6"
+          className="w-20 mx-auto mt-6"
           initial={{ opacity: 0, scale: 0.98 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
