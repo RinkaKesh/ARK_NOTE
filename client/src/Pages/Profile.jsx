@@ -87,7 +87,7 @@ const Profile = () => {
         }
     }
     return (
-        <div className='h-[calc(100vh-88px)] relative'>
+        <div className='mt-[82px] h-[calc(100vh-82px)] flex flex-col relative md:mt-0 md:h-screen'>
             {isloading && (
                 <div className="fixed inset-0 bg-white opacity-40 flex justify-center items-center z-50">
                     <p className="text-lg font-semibold text-gray-800 animate-pulse">Loading...</p>
