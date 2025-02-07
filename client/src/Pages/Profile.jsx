@@ -4,6 +4,8 @@ import axios from 'axios'
 import { getToken } from '../fun'
 import { toast } from 'react-toastify'
 import { ProfileContext } from '../Context/UserContext'
+import Header from '../Components/Header'
+import './Notes.css'
 
 const Profile = () => {
     const { id } = useParams()
@@ -88,12 +90,13 @@ const Profile = () => {
     }
     return (
         <div className='mt-[82px] h-[calc(100vh-82px)] flex flex-col relative md:mt-0 md:h-screen'>
+            <Header header_text={"Profile"} />
             {isloading && (
-                <div className="fixed inset-0 bg-white opacity-40 flex justify-center items-center z-50">
-                    <p className="text-lg font-semibold text-gray-800 animate-pulse">Loading...</p>
+                <div className="fixed inset-0 bg-white opacity-30 flex justify-center items-center z-50">
+                    <span className="loader"></span>
                 </div>
             )}
-            {!isloading && (<div className="flex items-center justify-center min-h-full">
+            {!isloading && (<div className="flex items-center justify-center flex-1">
                 <div className="w-full max-w-xl  bg-white p-6 rounded-lg shadow-lg -mt-[250px] border border-amber-100">
                     <p className="text-xl font-bold text-amber-500 mb-6 "><span className='text-gray-600 text-2xl'>Hi,</span> {formData.name}</p>
                     <form action="" onSubmit={handlesubmit} className="space-y-4">
