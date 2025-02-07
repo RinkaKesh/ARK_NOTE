@@ -8,6 +8,7 @@ import Profile from '../Pages/Profile'
 import { Routes,Route,Navigate,useNavigate } from 'react-router-dom'
 import { AuthContext } from "../Context/AuthProvider";
 import { isAuth } from '../fun'
+import {toast} from 'react-toastify'
 
 const AllRoutes = () => {
   const navigate = useNavigate();
@@ -20,6 +21,7 @@ const AllRoutes = () => {
       const checkAuth = () => {
         if (!isAuth()) {
           console.warn("Session expired. Redirecting...");
+          toast.warning("Session expired. Redirecting...");
           navigate("/login", { replace: true });
         }
       };
