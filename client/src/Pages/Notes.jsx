@@ -178,7 +178,7 @@ const Notes = () => {
   }, [notes]);
 
   return (
-    <div className="flex flex-col h-screen relative">
+    <div className="mt-[82px] h-[calc(100vh-82px)] flex flex-col relative md:mt-0 md:h-screen">
       <Header header_text={"My Notes"} />
       <div className="flex justify-end px-10">
           <button
@@ -198,7 +198,7 @@ const Notes = () => {
           <>
             <div className="relative">
               {/* Filter Button */}
-              <div className="fixed right-0 top-1/2 transform -translate-y-1/2 z-50 -rotate-90 cursor-pointer">
+              <div className="fixed right-0 top-1/2 transform -translate-y-1/2 z-30 -rotate-90 cursor-pointer">
                 <button
                   className="bg-amber-500 text-white px-4 py-2 rounded-md shadow-lg flex items-center gap-2 hover:bg-amber-400 transition duration-300 transform hover:scale-x-110"
                   onClick={() => setIsPanelOpen(true)}
