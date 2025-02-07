@@ -1,13 +1,14 @@
-import React, { useEffect, useState, useRef,useContext } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { getToken } from "../fun";
 import { IoMdClose } from "react-icons/io";
 import { Check } from "lucide-react";
 import { NotesContext } from "../Context/NotesProvider";
-import {NoteStatusService} from "../AllFun.js/StatusService.js";
+import { NoteStatusService } from "../AllFun.js/StatusService.js";
+import './Notes.css'
 
-const AddNote = ({ id, onClose }) => {
+const AddNote = ({ id, onClose}) => {
   const textareaRef = useRef(null);
   const initialState = { title: "", description: "", startDate: "", endDate: "", status: "" };
   const { addNote, updateNote } = useContext(NotesContext);
@@ -18,8 +19,8 @@ const AddNote = ({ id, onClose }) => {
     endDate: "",
     // status: "",
   });
-
-
+ 
+const [isLoading,setIsLoading]=useState(false)
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -28,6 +29,7 @@ const AddNote = ({ id, onClose }) => {
   const specificNote = async () => {
     if (!id) return;
     try {
+      setIsLoading(true)
       const response = await axios({
         method: "GET",
         url: `https://ark-note.vercel.app/notes/${id}`,
@@ -45,6 +47,9 @@ const AddNote = ({ id, onClose }) => {
     } catch (error) {
       console.log(error);
     }
+    finally {
+      setIsLoading(false)
+    }
   };
 
   useEffect(() => {
@@ -54,12 +59,12 @@ const AddNote = ({ id, onClose }) => {
 
   class NoteApi {
     static async saveNote(id, noteData) {
-      const url = id 
+      const url = id
         ? `https://ark-note.vercel.app/notes/edit/${id}`
         : `https://ark-note.vercel.app/notes/create`;
-      
+
       const method = id ? "PATCH" : "POST";
-      
+
       return axios({
         method,
         url,
@@ -67,14 +72,14 @@ const AddNote = ({ id, onClose }) => {
         headers: { Authorization: getToken() }
       });
     }
-  
-    static async completeNote(id) {
-      return axios({
-        method: "PATCH",
-        url: `https://ark-note.vercel.app/notes/complete/${id}`,
-        headers: { Authorization: getToken() }
-      });
-    }
+
+    //   static async completeNote(id) {
+    //     return axios({
+    //       method: "PATCH",
+    //       url: `https://ark-note.vercel.app/notes/complete/${id}`,
+    //       headers: { Authorization: getToken() }
+    //     });
+    //   }
   }
 
   const handleSubmit = async (e) => {
@@ -94,22 +99,22 @@ const AddNote = ({ id, onClose }) => {
       return;
     }
 
-    // Calculate initial status on frontend
+
     const newStatus = NoteStatusService.calculateStatus(
-      formData.startDate, 
-      formData.endDate, 
+      formData.startDate,
+      formData.endDate,
       initialState?.status
     );
-    
-    // Payload for API
+
     const payload = {
       ...formData,
       status: newStatus
     };
 
     try {
+      setIsLoading(true)
       const { data } = await NoteApi.saveNote(id, payload);
-      
+
       if (id) {
         updateNote(id, data.data);
         toast.success("Note updated successfully");
@@ -117,10 +122,13 @@ const AddNote = ({ id, onClose }) => {
         addNote(data.data);
         toast.success("Note created successfully");
       }
-      
+
       onClose();
     } catch (error) {
       toast.error(error.response?.data?.message || "An error occurred");
+    }
+    finally {
+      setIsLoading(false)
     }
   };
   useEffect(() => {
@@ -131,11 +139,14 @@ const AddNote = ({ id, onClose }) => {
   }, [formData.description]);
 
   return (
-    <div className="">
+    <div className="relative">
+      {isLoading && (
+        <div div className="fixed inset-0 z-50 flex justify-center items-center bg-white bg-opacity-30">
+          <span className="loader"></span>
+        </div>
+      )}
       <div className="flex justify-between items-center mb-4">
         <div className="flex items-center gap-2">
-          {/* <div className="w-8 h-8 rounded-full bg-emerald-700"> */}
-          {/* </div> */}
           <p className="text-lg font-bold">{id ? "Edit Note" : "Add Note"}</p>
         </div>
 
