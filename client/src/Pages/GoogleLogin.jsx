@@ -4,7 +4,6 @@ const GoogleLoginButton = () => {
   const handleGoogleLogin = () => {
     window.open(
       'https://ark-note.vercel.app/user/auth/google',
-      https://ark-note.vercel.app/user/auth/google
       '_blank',
       'width=500,height=600'
     );
