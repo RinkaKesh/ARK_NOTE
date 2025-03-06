@@ -4,7 +4,7 @@ const userRoute=express.Router()
 const { UserModel } = require("../models/userModel")
 const jwt = require("jsonwebtoken")
 const bcrypt = require('bcryptjs')
-
+const passport = require('passport');
 
 userRoute.get("/", async (req, res) => {
     try {
@@ -77,5 +77,47 @@ userRoute.post("/login", async(req, res) => {
         res.status(500).send({ message: "Server Error" })
     }
 })
+
+userRoute.get('/auth/google',
+    passport.authenticate('google', { scope: ['profile', 'email'] })
+  );
+  
+  userRoute.get('/auth/google/callback', 
+    passport.authenticate('google', { failureRedirect: '/login' }),
+    async (req, res) => {
+      try {
+        // Generate JWT token
+        const expiresIn = 10 * 60 * 60;
+        const token = jwt.sign(
+          { userId: req.user._id, username: req.user.name },
+          process.env.SECRET_KEY,
+          { expiresIn }
+        );
+        
+        // Convert user to plain object and remove password
+        const { password: _, ...userProfileWithoutPassword } = req.user.toObject();
+        
+        // Redirect to frontend with token
+        res.redirect(`/auth/success?token=${token}`);
+      } catch (error) {
+        res.status(500).send({ message: "Server Error" });
+      }
+    }
+  );
+  
+  // Endpoint to exchange token for user data
+  userRoute.get('/auth/success', (req, res) => {
+    res.send(`
+      <html>
+        <script>
+          window.opener.postMessage({ 
+            token: '${req.query.token}',
+            type: 'AUTH_SUCCESS' 
+          }, '*');
+          window.close();
+        </script>
+      </html>
+    `);
+  });
 
 module.exports = { userRoute }

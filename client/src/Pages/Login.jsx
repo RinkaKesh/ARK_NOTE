@@ -5,7 +5,7 @@ import { useNavigate, Link } from 'react-router-dom'
 import { ProfileContext } from '../Context/UserContext'
 import { hideLoader, showLoader } from '../fun'
 import Header from '../Components/Header'
-
+import GoogleLoginButton from './GoogleLogin'
 const Login = () => {
     const navigate = useNavigate()
     const { setProfileData } = useContext(ProfileContext)
@@ -31,7 +31,7 @@ const Login = () => {
             })
             if (response.status == 200) {
                 toast.success(response.data.message);
-                const expiryTime = new Date().getTime() + response.data.expiresIn * 1000; 
+                const expiryTime = new Date().getTime() + response.data.expiresIn * 1000;
                 localStorage.setItem("tokenExpiry", expiryTime);
                 localStorage.setItem("token", response.data.token)
                 localStorage.setItem("userdata", JSON.stringify(response.data.profile))
@@ -114,6 +114,14 @@ const Login = () => {
                         >
                             Login
                         </button>
+
+                        <div className="flex items-center my-4">
+                            <div className="flex-grow h-px bg-gray-300"></div>
+                            <span className="px-3 text-gray-500 text-sm">OR</span>
+                            <div className="flex-grow h-px bg-gray-300"></div>
+                        </div>
+
+                        <GoogleLoginButton />
                     </form>
                     <p className='mt-2 text-amber-800'>New User? <Link to="/register">Please Register!</Link></p>
                 </div>
