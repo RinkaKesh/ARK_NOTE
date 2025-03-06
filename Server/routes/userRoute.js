@@ -78,11 +78,11 @@ userRoute.post("/login", async(req, res) => {
     }
 })
 
-userRoute.get('/auth/google',
+userRoute.get('user/auth/google',
     passport.authenticate('google', { scope: ['profile', 'email'] })
   );
   
-  userRoute.get('/auth/google/callback', 
+  userRoute.get('user/auth/google/callback', 
     passport.authenticate('google', { failureRedirect: '/login' }),
     async (req, res) => {
       try {
