@@ -20,8 +20,8 @@ const AllRoutes = () => {
     useEffect(() => {
       const checkAuth = () => {
         if (!isAuth()) {
-          console.warn("Session expired. Redirecting...");
-          toast.warning("Session expired. Redirecting...");
+          console.warn("Session expired");
+          // toast.warning("Session expired. Login Again");
           navigate("/login", { replace: true });
         }
       };
